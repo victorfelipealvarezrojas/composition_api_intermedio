@@ -1,17 +1,16 @@
 <script lang="ts" setup>
-import pokemonAxiosApi from '../api/PokemonApi'
-import type { PokemonListResponse } from '../interfaces/pokemon-list.response'
+import { useGetPokemons } from '../composables/useGetPokemons'
 
-pokemonAxiosApi
-  .get<PokemonListResponse>('/pokemon?limit=100')
-  .then((response) => {
-    console.log('Pokemon List:', response.data.results)
-  })
-  .catch((error) => {
-    console.error('Error fetching Pokemon list:', error)
-  })
+const { count, isLoading, pokemons } = useGetPokemons()
 </script>
 
 <template>
-  <h1>Pokemon List</h1>
+  <h1>Pokemon List - {{ count }}</h1>
+  <h3 v-if="isLoading">Loading</h3>
+  <ul>
+    <li v-for="pokemon in pokemons" :key="pokemon.id">
+      {{ pokemon.name }}
+    </li>
+  </ul>
+  <div></div>
 </template>
