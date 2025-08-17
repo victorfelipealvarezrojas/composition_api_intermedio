@@ -6,10 +6,12 @@ import type { RouterLink } from '@/router/list-routes'
 const links: RouterLink[] =
   pokemonRoute.children?.map(({ name, path, props }) => {
     // props se definen desde la ruta
+
     return {
       name: name?.toString(),
       path: path,
       title: (props as { title: string }).title,
+      visible: (props as { isView?: boolean }).isView,
     }
   }) || []
 </script>

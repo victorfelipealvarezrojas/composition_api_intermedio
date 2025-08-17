@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { RouterLink } from '@/router/list-routes'
+import { computed } from 'vue'
 
 interface NavBarProps {
   title?: string
@@ -7,10 +8,13 @@ interface NavBarProps {
   isSecondary?: boolean
 }
 
-withDefaults(defineProps<NavBarProps>(), {
+const props = withDefaults(defineProps<NavBarProps>(), {
   title: 'Composition App',
   isSecondary: false,
 })
+
+// const links = toRef(props,'routerLinks') no pierdo referencia reactiva
+const links = computed(() => props.routerLinks.filter((link) => link.visible !== false))
 </script>
 
 <template>
@@ -21,7 +25,7 @@ withDefaults(defineProps<NavBarProps>(), {
     </template>
   </div>
   <nav>
-    <RouterLink v-for="route in routerLinks" v-bind:key="route.name" v-bind:to="route.path">{{
+    <RouterLink v-for="route in links" v-bind:key="route.name" v-bind:to="route.path">{{
       route.name
     }}</RouterLink>
   </nav>

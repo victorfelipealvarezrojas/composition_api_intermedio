@@ -19,3 +19,13 @@ export const getPokemons = async (): Promise<Pokemon[]> => {
   }
   return await Promise.all(pokemonPromises)
 }
+
+export const getPokemonById = async (id: string): Promise<Pokemon> => {
+  const { data } = await pokemonAxiosApi.get<PokemonResponse>(`/pokemon/${id}`)
+
+  return {
+    id: data.id,
+    name: data.name,
+    frontSprite: data.sprites.front_default,
+  }
+}

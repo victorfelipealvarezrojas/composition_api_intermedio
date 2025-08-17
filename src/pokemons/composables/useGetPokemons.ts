@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { getPokemons } from '../helpers/get-pokemons'
+import { getPokemons, getPokemonById } from '../helpers/get-pokemons'
 import { useQuery } from '@tanstack/vue-query'
 
 export const useGetPokemons = () => {
@@ -11,6 +11,7 @@ export const useGetPokemons = () => {
   } = useQuery({
     queryKey: ['poke'],
     queryFn: getPokemons,
+    retry: 1,
   })
 
   return {
@@ -19,5 +20,24 @@ export const useGetPokemons = () => {
     isError,
     error,
     count: computed(() => pokemons.value?.length ?? 0),
+  }
+}
+
+export const useGetPokemonById = (id: string) => {
+  const {
+    data: pokemon,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['poke', id],
+    queryFn: () => getPokemonById(id),
+    retry: 1,
+  })
+  return {
+    pokemon,
+    isLoading,
+    isError,
+    error,
   }
 }
